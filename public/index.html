@@ -1,1 +1,114 @@
-<!doctype html><html lang="ru"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Место</title><link href="main.css" rel="stylesheet"></head><body><div class="page"><header class="header"><img src="./images/header__logo.svg" alt="Логотип Место" class="header__logo"/></header><main class="content"><section class="profile content__profile"><div class="profile__avatar-container"><img src="#" alt="Жак-Ив Кусто" class="profile__avatar"/> <button class="profile__update-button" type="button"></button></div><div class="profile__info"><h1 class="profile__title"></h1><button class="profile__edit-button"></button><p class="profile__subtitle"></p></div><button class="profile__add-button"></button></section><section class="elements content__elements"><ul class="elements__list"></ul></section></main><footer class="footer page__footer"><p class="footer__copyright">&copy; 2020 Mesto Russia</p></footer><section class="popup popup_type_profile"><div class="popup__wrapper"><button class="popup__close-button button"></button><form action="#" id="edit-form" class="popup__form" name="popup-edit-form" novalidate><h2 class="popup__title">Редактировать профиль</h2><fieldset class="popup__info"><label class="popup__form-field"><input id="name-input" class="popup__input" name="name" placeholder="Имя" required minlength="2" maxlength="40"/> <span class="popup__error" id="name-input-error"></span></label> <label class="popup__form-field"><input id="job-input" class="popup__input" name="about" placeholder="О себе" required minlength="2" maxlength="200"/> <span class="popup__error" id="job-input-error"></span></label></fieldset><button class="popup__save-button button">Сохранить</button></form></div></section><section class="popup popup_type_add-card"><div class="popup__wrapper"><button class="popup__close-button button"></button><form action="#" id="add-form" class="popup__form" name="popup-add-form" novalidate><h2 class="popup__title">Новое место</h2><fieldset class="popup__info"><label class="popup__form-field"><input id="place-input" class="popup__input" name="place" placeholder="Название" required maxlength="30"/> <span class="popup__error" id="place-input-error"></span></label> <label class="popup__form-field"><input type="url" id="link-input" class="popup__input" name="link" placeholder="Ссылка на картинку" required/> <span class="popup__error" id="link-input-error"></span></label></fieldset><button class="popup__save-button button">Создать</button></form></div></section><section class="popup popup_type_image"><div class="popup__wrapper"><button class="popup__close-button button"></button><article class="popup__img-container"><img src="#" alt="" class="popup__card-img"/><p class="popup__title-img"></p></article></div></section><section class="popup popup_type_confirm"><div class="popup__wrapper"><button class="popup__close-button button"></button><form action="#" class="popup__form" name="popup-confirm-form"><h2 class="popup__title popup__title_type_confirm">Вы уверены?</h2><button type="submit" class="popup__save-button button">Да</button></form></div></section><section class="popup popup_type_update-avatar"><div class="popup__wrapper"><button class="popup__close-button button"></button><form action="#" id="update-form" class="popup__form" name="popup-update-form" novalidate><h2 class="popup__title">Обновить аватар</h2><fieldset class="popup__info"><label class="popup__form-field"><input type="url" id="link-input" class="popup__input" name="link" placeholder="Ссылка на картинку" required/> <span class="popup__error" id="link-input-error"></span></label></fieldset><button class="popup__save-button button" type="submit">Сохранить</button></form></div></section></div><template id="template-card"><li class="elements__item"><button class="elements__delete-card"></button> <img src="#" alt="" class="elements__img"/><div class="elements__container"><h2 class="elements__title"></h2><div class="elements__group"><button class="elements__like-button"></button> <span class="elements__like-count"></span></div></div></li></template><script src="main.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="favicon.ico" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="logo192.png" />
+    <link rel="manifest" href="manifest.json" />
+    <title>Место</title>
+    <link href="/static/css/main.86758ffd.chunk.css" rel="stylesheet" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script>
+      !(function (e) {
+        function t(t) {
+          for (
+            var n, a, l = t[0], c = t[1], f = t[2], p = 0, s = [];
+            p < l.length;
+            p++
+          )
+            (a = l[p]),
+              Object.prototype.hasOwnProperty.call(o, a) &&
+                o[a] &&
+                s.push(o[a][0]),
+              (o[a] = 0);
+          for (n in c)
+            Object.prototype.hasOwnProperty.call(c, n) && (e[n] = c[n]);
+          for (i && i(t); s.length; ) s.shift()();
+          return u.push.apply(u, f || []), r();
+        }
+        function r() {
+          for (var e, t = 0; t < u.length; t++) {
+            for (var r = u[t], n = !0, l = 1; l < r.length; l++) {
+              var c = r[l];
+              0 !== o[c] && (n = !1);
+            }
+            n && (u.splice(t--, 1), (e = a((a.s = r[0]))));
+          }
+          return e;
+        }
+        var n = {},
+          o = { 1: 0 },
+          u = [];
+        function a(t) {
+          if (n[t]) return n[t].exports;
+          var r = (n[t] = { i: t, l: !1, exports: {} });
+          return e[t].call(r.exports, r, r.exports, a), (r.l = !0), r.exports;
+        }
+        (a.m = e),
+          (a.c = n),
+          (a.d = function (e, t, r) {
+            a.o(e, t) ||
+              Object.defineProperty(e, t, { enumerable: !0, get: r });
+          }),
+          (a.r = function (e) {
+            "undefined" != typeof Symbol &&
+              Symbol.toStringTag &&
+              Object.defineProperty(e, Symbol.toStringTag, { value: "Module" }),
+              Object.defineProperty(e, "__esModule", { value: !0 });
+          }),
+          (a.t = function (e, t) {
+            if ((1 & t && (e = a(e)), 8 & t)) return e;
+            if (4 & t && "object" == typeof e && e && e.__esModule) return e;
+            var r = Object.create(null);
+            if (
+              (a.r(r),
+              Object.defineProperty(r, "default", { enumerable: !0, value: e }),
+              2 & t && "string" != typeof e)
+            )
+              for (var n in e)
+                a.d(
+                  r,
+                  n,
+                  function (t) {
+                    return e[t];
+                  }.bind(null, n)
+                );
+            return r;
+          }),
+          (a.n = function (e) {
+            var t =
+              e && e.__esModule
+                ? function () {
+                    return e.default;
+                  }
+                : function () {
+                    return e;
+                  };
+            return a.d(t, "a", t), t;
+          }),
+          (a.o = function (e, t) {
+            return Object.prototype.hasOwnProperty.call(e, t);
+          }),
+          (a.p = "/");
+        var l = (this["webpackJsonpmesto-react"] =
+            this["webpackJsonpmesto-react"] || []),
+          c = l.push.bind(l);
+        (l.push = t), (l = l.slice());
+        for (var f = 0; f < l.length; f++) t(l[f]);
+        var i = c;
+        r();
+      })([]);
+    </script>
+    <script src="/static/js/2.7070c5c6.chunk.js"></script>
+    <script src="/static/js/main.a2f60547.chunk.js"></script>
+  </body>
+</html>
