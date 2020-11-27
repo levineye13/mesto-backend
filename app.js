@@ -16,5 +16,5 @@ app.all('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log('Port ' + PORT);
+  console.log(`Сервер запущен на порту ${PORT}`);
 });
