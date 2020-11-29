@@ -6,7 +6,6 @@ const {
 } = require('./../controllers/usersController.js');
 
 usersRouter.get('/users', getAllUsers);
-usersRouter.get('/users/:id', doesUserExist);
-usersRouter.get('/users/:id', getProfile);
+usersRouter.get('/users/:id', doesUserExist, getProfile);
 
 module.exports = { usersRouter };
