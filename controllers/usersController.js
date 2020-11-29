@@ -3,12 +3,22 @@ const { getDataFromFile } = require('./../helpers/reader.js');
 
 const pathToUsersFile = path.join(__dirname, '..', 'data', 'users.json');
 
+/**
+ * @param  {Object} req - объект запроса к серверу
+ * @param  {Object} res - объект ответа сервера
+ */
 const getAllUsers = (req, res) => {
   getDataFromFile({ pathToFile: pathToUsersFile })
     .then((users) => res.status(200).send(users))
     .catch((err) => console.error(err));
 };
 
+/**
+ * middleware
+ * @param  {Object} req - объект запроса к серверу
+ * @param  {Object} res - объект ответа сервера
+ * @param  {Function} next - аргумент обратного вызова для функции промежуточного обработчика
+ */
 const doesUserExist = (req, res, next) => {
   getDataFromFile({ pathToFile: pathToUsersFile })
     .then((users) => {
@@ -22,6 +32,12 @@ const doesUserExist = (req, res, next) => {
     .catch((err) => console.error(err));
 };
 
+/**
+ * middleware
+ * @param  {Object} req - объект запроса к серверу
+ * @param  {Object} res - объект ответа сервера
+ * @param  {Function} next - аргумент обратного вызова для функции промежуточного обработчика
+ */
 const getProfile = (req, res, next) => {
   const { users } = res.locals;
   res.status(200).send(users[req.params.id]);

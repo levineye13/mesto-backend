@@ -11,6 +11,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', cardsRouter);
 app.use(usersRouter);
 
+//Возвращаем объект ошибки для всех остальных запросов
 app.all('*', (req, res) => {
   res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
 });

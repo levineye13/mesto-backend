@@ -3,6 +3,10 @@ const { getDataFromFile } = require('./../helpers/reader.js');
 
 const pathToCardsFile = path.join(__dirname, '..', 'data', 'cards.json');
 
+/**
+ * @param  {Object} req - объект запроса к серверу
+ * @param  {Object} res - объект ответа сервера
+ */
 const getCards = (req, res) => {
   getDataFromFile({ pathToFile: pathToCardsFile })
     .then((cards) => res.status(200).send(cards))

@@ -1,5 +1,10 @@
 const fsPromises = require('fs').promises;
 
+/**
+ * @async
+ * @param  {String} {pathToFile} - путь к файлу
+ * @returns {Object} - объект, преобразованный из JSON
+ */
 const getDataFromFile = async ({ pathToFile }) => {
   try {
     const res = await fsPromises.readFile(pathToFile, { encoding: 'utf-8' });
