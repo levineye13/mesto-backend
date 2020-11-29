@@ -1,5 +1,4 @@
 const path = require('path');
-const users = require('../routes/users.js');
 const { getDataFromFile } = require('./../helpers/reader.js');
 
 const pathToUsersFile = path.join(__dirname, '..', 'data', 'users.json');
@@ -7,7 +6,7 @@ const pathToUsersFile = path.join(__dirname, '..', 'data', 'users.json');
 const getAllUsers = (req, res) => {
   getDataFromFile({ pathToFile: pathToUsersFile })
     .then((users) => res.status(200).send(users))
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
 };
 
 const doesUserExist = (req, res, next) => {
@@ -20,7 +19,7 @@ const doesUserExist = (req, res, next) => {
       res.locals.users = users;
       next();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
 };
 
 const getProfile = (req, res, next) => {
