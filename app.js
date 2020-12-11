@@ -19,7 +19,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', cardsRouter);
+
 app.use((req, res, next) => {
   req.user = {
     _id: '5fd3432ff13b5849dcf1c338',
@@ -28,6 +28,8 @@ app.use((req, res, next) => {
   next();
 });
 app.use(usersRouter);
+
+app.use('/', cardsRouter);
 
 //Возвращаем объект ошибки для всех остальных запросов
 app.all('*', (req, res) => {

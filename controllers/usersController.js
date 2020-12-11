@@ -20,13 +20,15 @@ const getAllUsers = async (req, res) => {
  * @param  {Function} next - аргумент обратного вызова для функции промежуточного обработчика
  */
 const doesUserExist = async (req, res, next) => {
+  const { userId } = req.params;
+
   try {
-    const users = await User.find({});
-    if (!users[req.params.id]) {
+    const user = await User.findById(userId);
+    if (!user) {
       res.status(400).send({ message: 'Нет пользователя с таким id' });
       return;
     }
-    res.locals.users = users;
+    res.locals.user = user;
     next();
   } catch (err) {
     console.error(err);
@@ -40,8 +42,8 @@ const doesUserExist = async (req, res, next) => {
  * @param  {Function} next - аргумент обратного вызова для функции промежуточного обработчика
  */
 const getProfile = (req, res, next) => {
-  const { users } = res.locals;
-  res.status(200).send(users[req.params.id]);
+  const { user } = res.locals;
+  res.status(200).send(user);
 };
 
 /**

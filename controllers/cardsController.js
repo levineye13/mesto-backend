@@ -13,4 +13,17 @@ const getCards = async (req, res) => {
   }
 };
 
-module.exports = { getCards };
+const addCard = async (req, res) => {
+  const { name, link } = req.body;
+  const { _id } = req.user;
+
+  await Card.create({ name, link, owner: _id });
+};
+
+const deleteCard = async (req, res) => {
+  const { cardId } = req.params;
+
+  await Card.findByIdAndDelete(cardId);
+};
+
+module.exports = { getCards, addCard, deleteCard };
