@@ -22,7 +22,7 @@ const createCard = async (req, res) => {
   const { name, link } = req.body;
   const { _id } = req.user;
 
-  await Card.create({ name, link, owner: _id });
+  await Card.create({ name, link, owner: { _id } });
 };
 
 /**

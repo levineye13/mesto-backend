@@ -23,12 +23,13 @@ const doesUserExist = async (req, res, next) => {
   const { userId } = req.params;
 
   try {
-    const user = await User.findById(userId);
-    if (!user) {
+    const users = await User.find({});
+
+    if (!users[userId]) {
       res.status(400).send({ message: 'Нет пользователя с таким id' });
       return;
     }
-    res.locals.user = user;
+    res.locals.user = users[userId];
     next();
   } catch (err) {
     console.error(err);
