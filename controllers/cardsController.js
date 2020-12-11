@@ -1,7 +1,4 @@
-const path = require('path');
-const { getDataFromFile } = require('./../helpers/reader.js');
-
-const pathToCardsFile = path.join(__dirname, '..', 'data', 'cards.json');
+const Card = require('./../models/card');
 
 /**
  * @param  {Object} req - объект запроса к серверу
@@ -9,7 +6,7 @@ const pathToCardsFile = path.join(__dirname, '..', 'data', 'cards.json');
  */
 const getCards = async (req, res) => {
   try {
-    const cards = await getDataFromFile({ pathToFile: pathToCardsFile });
+    const cards = await Card.find({});
     res.status(200).send(cards);
   } catch (err) {
     console.error(err);

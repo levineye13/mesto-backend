@@ -44,6 +44,10 @@ const getProfile = (req, res, next) => {
   res.status(200).send(users[req.params.id]);
 };
 
+/**
+ * @param  {Object} req - объект запроса к серверу
+ * @param  {Object} res - объект ответа сервера
+ */
 const addUser = async (req, res) => {
   const { name, about, avatar } = req.body;
 
