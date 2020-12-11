@@ -47,13 +47,14 @@ const getProfile = (req, res, next) => {
 };
 
 /**
+ * Функция добавления пользователя
  * @param  {Object} req - объект запроса к серверу
  * @param  {Object} res - объект ответа сервера
  */
-const addUser = async (req, res) => {
+const createUser = async (req, res) => {
   const { name, about, avatar } = req.body;
 
   await User.create({ name, about, avatar });
 };
 
-module.exports = { getAllUsers, doesUserExist, getProfile, addUser };
+module.exports = { getAllUsers, doesUserExist, getProfile, createUser };
