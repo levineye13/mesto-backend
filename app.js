@@ -20,6 +20,13 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', cardsRouter);
+app.use((req, res, next) => {
+  req.user = {
+    _id: '5fd3432ff13b5849dcf1c338',
+  };
+
+  next();
+});
 app.use(usersRouter);
 
 //Возвращаем объект ошибки для всех остальных запросов
