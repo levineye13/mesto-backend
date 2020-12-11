@@ -1,7 +1,4 @@
-const path = require('path');
-const { getDataFromFile } = require('./../helpers/reader.js');
-
-const pathToUsersFile = path.join(__dirname, '..', 'data', 'users.json');
+const User = require('./../models/user');
 
 /**
  * @param  {Object} req - объект запроса к серверу
@@ -9,7 +6,7 @@ const pathToUsersFile = path.join(__dirname, '..', 'data', 'users.json');
  */
 const getAllUsers = async (req, res) => {
   try {
-    const users = await getDataFromFile({ pathToFile: pathToUsersFile });
+    const users = await User.find({});
     res.status(200).send(users);
   } catch (err) {
     console.error(err);
@@ -24,7 +21,7 @@ const getAllUsers = async (req, res) => {
  */
 const doesUserExist = async (req, res, next) => {
   try {
-    const users = await getDataFromFile({ pathToFile: pathToUsersFile });
+    const users = await User.find({});
     if (!users[req.params.id]) {
       res.status(400).send({ message: 'Нет пользователя с таким id' });
       return;
@@ -47,4 +44,10 @@ const getProfile = (req, res, next) => {
   res.status(200).send(users[req.params.id]);
 };
 
-module.exports = { getAllUsers, doesUserExist, getProfile };
+const addUser = async (req, res) => {
+  const { name, about, avatar } = req.body;
+
+  await User.create({ name, about, avatar });
+};
+
+module.exports = { getAllUsers, doesUserExist, getProfile, addUser };
