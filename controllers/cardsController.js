@@ -61,7 +61,7 @@ const deleteCard = async (req, res) => {
   const { cardId } = req.params;
 
   try {
-    const deletedCard = await Card.findByIdAndDelete(cardId);
+    const deletedCard = await Card.findByIdAndRemove(cardId);
     if (!deletedCard) {
       throw new Error('Карточка с таким id не найдена');
     }
@@ -75,4 +75,54 @@ const deleteCard = async (req, res) => {
   }
 };
 
-module.exports = { getCards, createCard, deleteCard };
+/**
+ * Функция лайка карточки
+ * @param  {Object} req - объект запроса к серверу
+ * @param  {Object} res - объект ответа сервера
+ */
+const likeCard = async (req, res) => {
+  const { _id } = req.user;
+  const { cardId } = req.params;
+
+  try {
+    const updatedCard = await Card.findByIdAndUpdate(
+      cardId,
+      { $addToSet: { likes: _id } },
+      { new: true }
+    );
+    return updatedCard;
+  } catch (err) {
+    handleError({
+      responce: res,
+      error: err,
+      errorCode: NOT_FOUND_ERROR,
+    });
+  }
+};
+
+/**
+ * Функция дизлайка карточки
+ * @param  {Object} req - объект запроса к серверу
+ * @param  {Object} res - объект ответа сервера
+ */
+const dislikeCard = async (req, res) => {
+  const { _id } = req.user;
+  const { cardId } = req.params;
+
+  try {
+    const updatedCard = await Card.findByIdAndUpdate(
+      cardId,
+      { $pull: { likes: _id } },
+      { new: true }
+    );
+    return updatedCard;
+  } catch (err) {
+    handleError({
+      responce: res,
+      error: err,
+      errorCode: NOT_FOUND_ERROR,
+    });
+  }
+};
+
+module.exports = { getCards, createCard, deleteCard, likeCard, dislikeCard };
