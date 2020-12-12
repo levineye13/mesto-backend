@@ -26,7 +26,6 @@ app.use((req, res, next) => {
   next();
 });
 app.use(usersRouter);
-
 app.use('/', cardsRouter);
 
 //Возвращаем объект ошибки для всех остальных запросов

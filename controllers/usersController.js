@@ -5,6 +5,7 @@ const {
   NOT_FOUND_ERROR,
   INTERNAL_SERVER_ERROR,
 } = require('./../utils/constants');
+const { handleError } = require('./../utils/utils');
 
 /**
  * @param  {Object} req - объект запроса к серверу
@@ -18,7 +19,11 @@ const getAllUsers = async (req, res) => {
     }
     res.status(STATUS_OK).send(users);
   } catch (err) {
-    res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
+    handleError({
+      responce: res,
+      error: err,
+      errorCode: INTERNAL_SERVER_ERROR,
+    });
   }
 };
 
@@ -41,7 +46,11 @@ const doesUserExist = async (req, res, next) => {
     res.locals.user = users[userId];
     next();
   } catch (err) {
-    res.status(NOT_FOUND_ERROR).send({ message: err.message });
+    handleError({
+      responce: res,
+      error: err,
+      errorCode: NOT_FOUND_ERROR,
+    });
   }
 };
 
@@ -73,10 +82,17 @@ const createUser = async (req, res) => {
       'Переданы некорректные данные в метод создания пользователя'
     );
   } catch (err) {
-    res.status(BAD_REQUEST_ERROR).send({
-      message: err.message,
+    handleError({
+      responce: res,
+      error: err,
+      errorCode: BAD_REQUEST_ERROR,
     });
   }
 };
 
-module.exports = { getAllUsers, doesUserExist, getProfile, createUser };
+module.exports = {
+  getAllUsers,
+  doesUserExist,
+  getProfile,
+  createUser,
+};

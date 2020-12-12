@@ -5,6 +5,7 @@ const {
   NOT_FOUND_ERROR,
   INTERNAL_SERVER_ERROR,
 } = require('./../utils/constants');
+const { handleError } = require('./../utils/utils');
 
 /**
  * @param  {Object} req - объект запроса к серверу
@@ -18,7 +19,11 @@ const getCards = async (req, res) => {
     }
     res.status(STATUS_OK).send(cards);
   } catch (err) {
-    res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
+    handleError({
+      responce: res,
+      error: err,
+      errorCode: INTERNAL_SERVER_ERROR,
+    });
   }
 };
 
@@ -39,7 +44,11 @@ const createCard = async (req, res) => {
     }
     throw new Error('Переданы некорректные данные в метод создания карточки');
   } catch (err) {
-    res.status(BAD_REQUEST_ERROR).send({ message: err.message });
+    handleError({
+      responce: res,
+      error: err,
+      errorCode: BAD_REQUEST_ERROR,
+    });
   }
 };
 
@@ -58,7 +67,11 @@ const deleteCard = async (req, res) => {
     }
     res.status(STATUS_OK).send(deleteCard);
   } catch (err) {
-    res.status(NOT_FOUND_ERROR).send({ message: err.message });
+    handleError({
+      responce: res,
+      error: err,
+      errorCode: NOT_FOUND_ERROR,
+    });
   }
 };
 
