@@ -14,8 +14,9 @@ const { handleError } = require('./../utils/utils');
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});
-    if (!users) {
-      throw new Error('На сервере произошла ошибка');
+    if (users.length === 0) {
+      res.status(NOT_FOUND_ERROR).send({ message: 'Пользователи не найдены' });
+      return;
     }
     res.status(STATUS_OK).send(users);
   } catch (err) {
@@ -38,9 +39,11 @@ const doesUserExist = async (req, res, next) => {
 
   try {
     const users = await User.find({});
-    if (!users[userId] && typeof userId === 'number') {
-      //if (!users[userId]) {
-      throw new Error('Пользователь с таким id не найден');
+    if (!users[userId]) {
+      res
+        .status(NOT_FOUND_ERROR)
+        .send({ message: 'Пользователь с таким id не найден' });
+      return;
     }
 
     res.locals.user = users[userId];
@@ -49,7 +52,7 @@ const doesUserExist = async (req, res, next) => {
     handleError({
       responce: res,
       error: err,
-      errorCode: NOT_FOUND_ERROR,
+      errorCode: INTERNAL_SERVER_ERROR,
     });
   }
 };
@@ -73,19 +76,16 @@ const getProfile = (req, res, next) => {
 const createUser = async (req, res) => {
   const { name, about, avatar } = req.body;
   try {
-    if (name && about && avatar) {
-      const newUser = await User.create({ name, about, avatar });
-      res.status(STATUS_OK).send(newUser);
-      return;
-    }
-    throw new Error(
-      'Переданы некорректные данные в метод создания пользователя'
-    );
+    const newUser = await User.create({ name, about, avatar });
+    res.status(STATUS_OK).send(newUser);
   } catch (err) {
     handleError({
       responce: res,
       error: err,
-      errorCode: BAD_REQUEST_ERROR,
+      errorCode:
+        err.name === 'ValidationError'
+          ? BAD_REQUEST_ERROR
+          : INTERNAL_SERVER_ERROR,
     });
   }
 };

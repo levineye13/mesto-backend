@@ -1,3 +1,4 @@
+const { Types, Model } = require('mongoose');
 const Card = require('./../models/card');
 const {
   STATUS_OK,
@@ -14,8 +15,9 @@ const { handleError } = require('./../utils/utils');
 const getCards = async (req, res) => {
   try {
     const cards = await Card.find({});
-    if (!cards) {
-      throw new Error('На сервере произошла ошибка');
+    if (cards.length === 0) {
+      res.status(NOT_FOUND_ERROR).send({ message: 'Карточки не найдены' });
+      return;
     }
     res.status(STATUS_OK).send(cards);
   } catch (err) {
@@ -37,17 +39,17 @@ const createCard = async (req, res) => {
   const { _id } = req.user;
 
   try {
-    if (name && link) {
-      const newCard = await Card.create({ name, link, owner: { _id } });
-      res.status(STATUS_OK).send(newCard);
-      return;
-    }
-    throw new Error('Переданы некорректные данные в метод создания карточки');
+    const newCard = await Card.create({ name, link, owner: { _id } });
+    res.status(STATUS_OK).send(newCard);
   } catch (err) {
     handleError({
       responce: res,
       error: err,
-      errorCode: BAD_REQUEST_ERROR,
+      //Если ошибка валидации, то 400, иначе 500
+      errorCode:
+        err.name === 'ValidationError'
+          ? BAD_REQUEST_ERROR
+          : INTERNAL_SERVER_ERROR,
     });
   }
 };
@@ -63,14 +65,17 @@ const deleteCard = async (req, res) => {
   try {
     const deletedCard = await Card.findByIdAndRemove(cardId);
     if (!deletedCard) {
-      throw new Error('Карточка с таким id не найдена');
+      res.status(NOT_FOUND_ERROR).send({
+        message: 'Карточка не найдена',
+      });
+      return;
     }
-    res.status(STATUS_OK).send(deleteCard);
+    res.status(STATUS_OK).send(deletedCard);
   } catch (err) {
     handleError({
       responce: res,
       error: err,
-      errorCode: NOT_FOUND_ERROR,
+      errorCode: INTERNAL_SERVER_ERROR,
     });
   }
 };
@@ -90,12 +95,14 @@ const likeCard = async (req, res) => {
       { $addToSet: { likes: _id } },
       { new: true }
     );
-    return updatedCard;
+    return !updatedCard
+      ? res.status(NOT_FOUND_ERROR).send({ message: 'Карточка не найдена' })
+      : res.status(STATUS_OK).send(updatedCard);
   } catch (err) {
     handleError({
       responce: res,
       error: err,
-      errorCode: NOT_FOUND_ERROR,
+      errorCode: INTERNAL_SERVER_ERROR,
     });
   }
 };
@@ -115,12 +122,14 @@ const dislikeCard = async (req, res) => {
       { $pull: { likes: _id } },
       { new: true }
     );
-    return updatedCard;
+    return !updatedCard
+      ? res.status(NOT_FOUND_ERROR).send({ message: 'Карточка не найдена' })
+      : res.status(STATUS_OK).send(updatedCard);
   } catch (err) {
     handleError({
       responce: res,
       error: err,
-      errorCode: NOT_FOUND_ERROR,
+      errorCode: INTERNAL_SERVER_ERROR,
     });
   }
 };
