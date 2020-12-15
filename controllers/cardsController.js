@@ -64,13 +64,9 @@ const deleteCard = async (req, res) => {
 
   try {
     const deletedCard = await Card.findByIdAndRemove(cardId);
-    if (!deletedCard) {
-      res.status(NOT_FOUND_ERROR).send({
-        message: 'Карточка не найдена',
-      });
-      return;
-    }
-    res.status(STATUS_OK).send(deletedCard);
+    return !deletedCard
+      ? res.status(NOT_FOUND_ERROR).send({ message: 'Карточка не найдена' })
+      : res.status(STATUS_OK).send(deletedCard);
   } catch (err) {
     handleError({
       responce: res,

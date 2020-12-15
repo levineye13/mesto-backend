@@ -79,21 +79,20 @@ const updateProfile = async (req, res) => {
   const { _id } = req.user;
   const { name, about } = req.body;
   try {
-    if (name && about) {
-      const updatedProfile = await User.findByIdAndUpdate(
-        _id,
-        { name, about },
-        { new: true, runValidators: true, upsert: true }
-      );
-      res.status(STATUS_OK).send(updatedProfile);
-      return;
-    }
-    throw new Error('Переданы некорректные данные в метод обновления профиля');
+    const updatedProfile = await User.findByIdAndUpdate(
+      _id,
+      { name, about },
+      { new: true, runValidators: true, upsert: true }
+    );
+    res.status(STATUS_OK).send(updatedProfile);
   } catch (err) {
     handleError({
       responce: res,
       error: err,
-      errorCode: BAD_REQUEST_ERROR,
+      errorCode:
+        err.name === 'ValidationError'
+          ? BAD_REQUEST_ERROR
+          : INTERNAL_SERVER_ERROR,
     });
   }
 };
@@ -107,21 +106,20 @@ const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const { avatar } = req.body;
   try {
-    if (avatar) {
-      const updatedAvatar = await User.findByIdAndUpdate(
-        _id,
-        { avatar },
-        { new: true, runValidators: true, upsert: true }
-      );
-      res.status(STATUS_OK).send(updatedAvatar);
-      return;
-    }
-    throw new Error('Переданы некорректные данные в метод обновления аватарки');
+    const updatedAvatar = await User.findByIdAndUpdate(
+      _id,
+      { avatar },
+      { new: true, runValidators: true, upsert: true }
+    );
+    res.status(STATUS_OK).send(updatedAvatar);
   } catch (err) {
     handleError({
       responce: res,
       error: err,
-      errorCode: BAD_REQUEST_ERROR,
+      errorCode:
+        err.name === 'ValidationError'
+          ? BAD_REQUEST_ERROR
+          : INTERNAL_SERVER_ERROR,
     });
   }
 };
