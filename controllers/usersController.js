@@ -29,25 +29,16 @@ const getAllUsers = async (req, res) => {
 };
 
 /**
- * middleware
  * @param  {Object} req - объект запроса к серверу
  * @param  {Object} res - объект ответа сервера
- * @param  {Function} next - аргумент обратного вызова для функции промежуточного обработчика
  */
-const doesUserExist = async (req, res, next) => {
+const getProfile = async (req, res) => {
   const { userId } = req.params;
-
   try {
-    const users = await User.find({});
-    if (!users[userId]) {
-      res
-        .status(NOT_FOUND_ERROR)
-        .send({ message: 'Пользователь с таким id не найден' });
-      return;
-    }
-
-    res.locals.user = users[userId];
-    next();
+    const user = await User.findById(userId);
+    return !user
+      ? res.status(NOT_FOUND_ERROR).send({ message: 'Пользователь не найден' })
+      : res.status(STATUS_OK).send(user);
   } catch (err) {
     handleError({
       responce: res,
@@ -55,17 +46,6 @@ const doesUserExist = async (req, res, next) => {
       errorCode: INTERNAL_SERVER_ERROR,
     });
   }
-};
-
-/**
- * middleware
- * @param  {Object} req - объект запроса к серверу
- * @param  {Object} res - объект ответа сервера
- * @param  {Function} next - аргумент обратного вызова для функции промежуточного обработчика
- */
-const getProfile = (req, res, next) => {
-  const { user } = res.locals;
-  res.status(STATUS_OK).send(user);
 };
 
 /**
@@ -148,7 +128,6 @@ const updateAvatar = async (req, res) => {
 
 module.exports = {
   getAllUsers,
-  doesUserExist,
   getProfile,
   createUser,
   updateProfile,
